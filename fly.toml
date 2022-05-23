@@ -1,0 +1,54 @@
+# fly.toml file generated for alexander-livebook on 2022-05-23T04:41:31-07:00
+
+app = "alexander-livebook"
+
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]
+  ELIXIR_ERL_OPTIONS = "-proto_dist inet6_tcp"
+  LIVEBOOK_APP_SERVICE_NAME = "Fly.io - alexander-livebook"
+  LIVEBOOK_APP_SERVICE_URL = "https://fly.io/apps/alexander-livebook"
+  LIVEBOOK_DATA_PATH = "/data"
+  LIVEBOOK_HOME = "/data"
+  LIVEBOOK_IP = "::"
+  LIVEBOOK_ROOT_PATH = "/data"
+  LIVEBOOK_UPDATE_INSTRUCTIONS_URL = "https://community.fly.io/t/how-to-update-launcher-based-livebook/3796"
+  PORT = "8080"
+
+[experimental]
+  allowed_public_ports = []
+  auto_rollback = true
+  private_network = true
+
+[[mounts]]
+  destination = "/data"
+  encrypted = false
+  source = "livebook_data"
+
+[[services]]
+  http_checks = []
+  internal_port = 8080
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 6
+    timeout = "2s"
