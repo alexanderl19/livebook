@@ -30,11 +30,11 @@ defmodule Livebook do
 
       [
         %{
-          dependency: {:kino, "~> 0.6.0"},
+          dependency: {:kino, "~> 0.6.1"},
           description: "Interactive widgets for Livebook",
           name: "kino",
           url: "https://hex.pm/packages/kino",
-          version: "0.6.0"
+          version: "0.6.1"
         }
       ]
 
@@ -95,7 +95,8 @@ defmodule Livebook do
     end
 
     if ip = Livebook.Config.ip!("LIVEBOOK_IP") do
-      config :livebook, LivebookWeb.Endpoint, http: [ip: ip]
+      host = Livebook.Utils.ip_to_host(ip)
+      config :livebook, LivebookWeb.Endpoint, http: [ip: ip], url: [host: host]
     end
 
     cond do
